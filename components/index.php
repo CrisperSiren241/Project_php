@@ -1,5 +1,35 @@
 <?php require './header.php' ?>
 
+<?php
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    include "../database/db.php";
+
+    $username = $_POST["username"];
+    $password = $_POST["password"];
+
+    $query = "SELECT * FROM users WHERE username='$username'";
+    $result = mysqli_query($connect, $query);
+
+    if (mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        if (password_verify($password . $row['salt'], $row['password'])) {
+            session_start();
+            $_SESSION['user_id'] = $row['id'];
+            $_SESSION['username'] = $row['fullname'];
+            header('Location: main.php');
+        } else {
+            $passError = "Неправильно указан пароль!";
+        }
+    } else {
+        $loginError = "Такого пользователя не существует!";
+    }
+}
+
+
+?>
+
 <body>
     <div class="wrap">
         <div class="smh">
@@ -18,21 +48,17 @@
                     <div class="loginForm__container">
                         <div class="content__inner">
                             <h1>Добро пожаловать!</h1>
-                            <form action="./process-login.php" method="post">
-                                <span class="error-message"><?= @$loginError; ?></span>
+                            <form method="post">
                                 <div class="form-group">
                                     <label for="username">Логин:</label>
                                     <input type="text" id="username" name="username" required>
+                                    <span class="error-message"><?= @$loginError; ?></span>
                                 </div>
                                 <div class="form-group">
                                     <label for="password">Пароль:</label>
                                     <input type="password" id="password" name="password" required>
-                                    <div id="passwordError" class="error-message"></div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="confirmPassword">Повторите пароль:</label>
-                                    <input type="password" id="confirmPassword" name="confirmPassword" required>
-                                    <div id="passwordError" class="error-message"></div>
+                                    <span class="error-message"><?= @$passError; ?></span>
+
                                 </div>
                                 <div class="form-group">
                                     <input type="submit" value="Войти">

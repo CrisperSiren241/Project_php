@@ -17,14 +17,16 @@ h1{
 }
 
 a{
-    margin-top: 20px;
     text-decoration: none;
     color: aliceblue;
-    margin-right: 110px;
 }
 
 a:hover{
     text-decoration:underline aliceblue;
+}
+
+input:focus {
+    outline: none;
 }
 
 .wrap{
@@ -45,7 +47,8 @@ a:hover{
 
 .error-message {
     color: red;
-    margin-top: 5px;
+    padding: 10px 0;
+    display: block;
 }
 
 .loginForm{
@@ -72,9 +75,10 @@ a:hover{
 
 .loginForm__header__inner nav{
     display: flex;
-    justify-content: space-around;
     align-items: center;
+    justify-content: space-between;
     font-size: 26px;
+    gap: 110px;
 }
 
 .content{
@@ -97,11 +101,6 @@ a:hover{
 
 .content__inner h1{
     margin-bottom: 50px;
-}
-
-.form-group {
-    margin-top: 20px;
-    margin-bottom: 20px;
 }
 
 .form-group label {
@@ -191,4 +190,10 @@ footer {
     position: fixed;
     bottom: 0;
     width: 100%;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
